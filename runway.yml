@@ -2,7 +2,7 @@
 # See full syntax at https://docs.onica.com/projects/runway
 deployments:
   - modules:
-      #- path: imgmgr.cfn
       - path: vpc.cfn
+      #- path: imgmgr.cfn
     regions:
       - us-east-2

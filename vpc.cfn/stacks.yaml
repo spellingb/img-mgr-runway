@@ -1,0 +1,10 @@
+namespace: ${namespace}
+
+sys_path: ./
+
+stacks:
+  vpc:
+    template_path: templates/vpc.yaml  # also supports json templates
+    variables:
+      EnvironmentName: ${environment}
+      

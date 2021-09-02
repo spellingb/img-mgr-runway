@@ -17,16 +17,16 @@
 .NOTES
     General notes
 #>
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess , ConfirmImpact = 'High')]
 param (
     [Parameter()]
     [string]
     [ValidateSet('Common','Development','Production')]
-    $Environment = 'Common',
-
-    [switch]
-    $DryRun
+    $Environment = 'Common'
 )
+Begin {
+    $env:DEPLOY_ENVIRONMENT = $Environment
+}
 
 Process {
     #check for proper dir structure things
@@ -42,42 +42,12 @@ Process {
         }
     }
 
-    #region Define KeyPair
-    $keySplat = @{
-        Region = $Region
-        KeyName = 'MyVPCLab-KeyPair'
-    }
-    $priKey = "$home\.ssh\id_rsa"
-    $pubKey = "$home\.ssh\id_rsa.pub"
-    try {
-        $keyPair = Get-EC2KeyPair @keySplat -ErrorAction Stop
-    }
-    catch {
-        if ( ( Test-Path $priKey ) -and ( Test-Path $pubKey ) ) {
-            $keySplat['PublicKey'] = [io.file]::ReadAllText( $pubKey )
-            $keyPair = Import-EC2KeyPair @keySplat
-            Write-Warning "SSH key Imported:"
-        } else {
-            #to-do:
-            # find a way to match md5 of uploaded key to what is on localmachine
-            # and only create new key if checksums do not match
-            $keySplat['KeyName']
-            $keyPair = New-EC2KeyPair @keySplat
-            Write-Warning 'New Key Created:'
-            $keyPair.KeyMaterial | Out-File -Encoding ascii -FilePath "$home\.ssh\MyVPCLab-KeyPair" -Force
-        }
-    }
-    finally {
-        Write-Verbose "$($keyPair|Out-String)" -Verbose
-    }
-    #endregion KeyPair
-
-
     #let R Rip
-    $env:DEPLOY_ENVIRONMENT = $Environment
-    if ( $DryRun ) {
-        runway.exe plan
-    } else {
+        if ( $WhatIfPreference ) {
+        Write-Warning 'Running Taxi Only. NO CHANGES WILL BE MADE TO ENVIRONMENT!!!'
+        runway.exe taxi
+    } 
+    if( $PSCmdlet.ShouldProcess( $Environment, "Deploy to environment") ) {
         runway.exe deploy
     }
 }

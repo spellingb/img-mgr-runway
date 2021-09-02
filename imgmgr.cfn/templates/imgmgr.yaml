@@ -5,8 +5,8 @@ Parameters:
     Type: String
     Description: Environment to which this stack belongs
     AllowedValues:
-      - development
-      - production
+      - Development
+      - Production
   CustomerName:
     Type: String
     Description: Name of customer
@@ -36,7 +36,7 @@ Parameters:
   AppServerMaxCount:
     Type: String
     Description: How many max instance count to run
-    Default: '1'
+    Default: '2'
   AvailabilityZones:
     Type: 'List<AWS::EC2::AvailabilityZone::Name>'
     Description: which AZs to launch instances into
@@ -207,14 +207,14 @@ Resources:
       AdjustmentType: ChangeInCapacity
       AutoScalingGroupName: !Ref AppServerGroup
       Cooldown: '60'
-      ScalingAdjustment: '1'
+      ScalingAdjustment: 1
   WebServerScaleDownPolicy:
     Type: 'AWS::AutoScaling::ScalingPolicy'
     Properties:
       AdjustmentType: ChangeInCapacity
       AutoScalingGroupName: !Ref AppServerGroup
       Cooldown: '60'
-      ScalingAdjustment: '-1'
+      ScalingAdjustment: -1
   CPUAlarmHigh:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:
@@ -222,9 +222,9 @@ Resources:
       MetricName: CPUUtilization
       Namespace: AWS/EC2
       Statistic: Average
-      Period: '300'
-      EvaluationPeriods: '1'
-      Threshold: '50'
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 50
       AlarmActions:
         - !Ref WebServerScaleUpPolicy
       Dimensions:
@@ -238,9 +238,9 @@ Resources:
       MetricName: CPUUtilization
       Namespace: AWS/EC2
       Statistic: Average
-      Period: '300'
-      EvaluationPeriods: '1'
-      Threshold: '15'
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 15
       AlarmActions:
         - !Ref WebServerScaleDownPolicy
       Dimensions:

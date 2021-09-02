@@ -3,19 +3,17 @@ namespace: ${namespace}
 sys_path: ./
 
 stacks:
-  vpc:
+  ImgMgr:
     template_path: templates/imgmgr.yaml  # also supports json templates
     variables:
       EnvironmentName: ${environment}
       CustomerName: ${customer}
       ApplicationName: Img-Mgr
-      SshKey: ${sshKey}
-      ImageId: ${imgid}
-      VpcId: ${vpcid}
-      LoadBalancerSubnets: 
-      Subnets:
-      AppServerMinCount:
-      AppServerMaxCount:
-      AvailabilityZones:
-      HealthCheckType:
-      InstanceType:   
+      SshKey: ${sshkey}
+      ImageId: ${ami}
+      VpcId: ${xref contoso-common-vpc::VPC}
+      LoadBalancerSubnets: ${xref contoso-common-vpc::PublicSubnet1},${xref contoso-common-vpc::PublicSubnet2}
+      Subnets: ${xref contoso-common-vpc::PrivateSubnet1},${xref contoso-common-vpc::PrivateSubnet2}
+      AvailabilityZones: ${xref contoso-common-vpc::AZ1},${xref contoso-common-vpc::AZ2}
+      AppServerMinCount: ${appservermin}
+      AppServerMaxCount: ${appservermax}

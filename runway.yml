@@ -3,7 +3,6 @@
 deployments:
   - modules:
       - path: vpc.cfn
-        type: cloudformation
-      #- imgmgr.cfn
+      - imgmgr.cfn
     regions:
       - us-east-2

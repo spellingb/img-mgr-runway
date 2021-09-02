@@ -1,0 +1,21 @@
+namespace: ${namespace}
+
+sys_path: ./
+
+stacks:
+  vpc:
+    template_path: templates/imgmgr.yaml  # also supports json templates
+    variables:
+      EnvironmentName: ${environment}
+      CustomerName: ${customer}
+      ApplicationName: Img-Mgr
+      SshKey: ${sshKey}
+      ImageId: ${imgid}
+      VpcId: ${vpcid}
+      LoadBalancerSubnets: 
+      Subnets:
+      AppServerMinCount:
+      AppServerMaxCount:
+      AvailabilityZones:
+      HealthCheckType:
+      InstanceType:   

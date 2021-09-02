@@ -2,7 +2,8 @@
 # See full syntax at https://docs.onica.com/projects/runway
 deployments:
   - modules:
-      - vpc.cfn
+      - path: vpc.cfn
+        type: cloudformation
       #- imgmgr.cfn
     regions:
       - us-east-2

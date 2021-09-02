@@ -7,4 +7,8 @@ stacks:
     template_path: templates/vpc.yaml  # also supports json templates
     variables:
       EnvironmentName: ${environment}
-      
+      VpcCIDR: ${vpc_sub}
+      PublicSubnet1CIDR: ${pub_sub_1}
+      PublicSubnet2CIDR: ${pub_sub_2}
+      PrivateSubnet1CIDR: ${priv_sub_1}
+      PrivateSubnet2CIDR: ${priv_sub_2}
